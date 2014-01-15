@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="plugins/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="divcharts.js"></script>
+<script type="text/javascript">
+	var chart; //Global for testing
+	var isPolling = false;
+	var interval;
+	
+	function update(){
+		var values = [];
+		for(var i = 0; i < 5; i++){
+			values.push(((Math.random() * 100) + 1));
+		}
+		chart = chart.DivChart('update', { values: values });
+	}
+	
+	$(function(){
+		chart = $('#mychart').DivChart({
+			width: 500,
+			labels: ['a', 'b', 'c', 'd', 'e'],
+			values: [5,10,20,40, 80]
+		});
+		$('#startstop').click(function(){
+			if(isPolling){
+				$(this).text('Start');
+				chart = chart.DivChart('stop');
+				clearInterval(interval);
+				isPolling = false;
+			}else{
+				$(this).text('Stop');
+				interval = setInterval(update, 1000);
+				isPolling = true;
+			}
+		});		
+	});
+</script>
+<link rel="stylesheet" type="text/css" href="divcharts.css"></style>
+<style type="text/css">
+	#startstop{
+		font-size: 18px;
+		margin-top: 30px;
+	}
+</style>
+</head>
+<body>
+	<div id="mychart"></div>
+	<div style="clear:both;"></div>
+	<button id="startstop">Start</button>
+</body>
+</html>
